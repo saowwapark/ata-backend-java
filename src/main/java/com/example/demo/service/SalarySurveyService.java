@@ -36,22 +36,29 @@ public class SalarySurveyService {
         }
         query.multiselect(selections);
 
-
         // Dynamic filters
         List<Predicate> predicates = new ArrayList<>();
         filters.forEach((key, value) -> {
             if (key.contains("[gte]")) {
                 String column = key.replace("[gte]", "");
                 predicates.add(cb.greaterThanOrEqualTo(root.get(column), value));
-            } else if (key.contains("[lte]")) {
+            } else if (key.contains("[gt]")) {
+                String column = key.replace("[gt]", "");
+                predicates.add(cb.greaterThan(root.get(column), value));
+            }
+            else if (key.contains("[lte]")) {
                 String column = key.replace("[lte]", "");
                 predicates.add(cb.lessThanOrEqualTo(root.get(column), value));
-            } else {
-                predicates.add(cb.equal(root.get(key), value));
+            } else if (key.contains("[lt]")) {
+                String column = key.replace("[lt]", "");
+                predicates.add(cb.lessThan(root.get(column), value));
+            }
+            else {
+                predicates.add(cb.like(root.get(key), '%' + value + '%'));
             }
         });
         query.where(cb.and(predicates.toArray(new Predicate[0])));
-        /*
+
         // Dynamic sorting
         if (sortColumns != null && !sortColumns.isEmpty()) {
             List<Order> orders = new ArrayList<>();
@@ -66,7 +73,6 @@ public class SalarySurveyService {
             }
             query.orderBy(orders);
         }
-        */
 
 
         List<Tuple> tupleList = entityManager.createQuery(query).getResultList();
@@ -78,8 +84,8 @@ public class SalarySurveyService {
     private SalarySurveyDTO mapTupleToDTO(Tuple tuple, List<String> fields) {
         SalarySurveyDTO dto = new SalarySurveyDTO();
 
-        if (fields.contains("time_stamp")) {
-            dto.setTimeStamp(tuple.get("time_stamp", String.class));
+        if (fields.contains("timestamp")) {
+            dto.setTimestamp(tuple.get("timestamp", String.class));
         }
         if (fields.contains("employer")) {
             dto.setEmployer(tuple.get("employer", String.class));
@@ -112,7 +118,7 @@ public class SalarySurveyService {
             dto.setGender(tuple.get("gender", String.class));
         }
         if (fields.contains("additional_comments")) {
-            dto.setAdditionalComment(tuple.get("additional_comments", String.class));
+            dto.setAdditionalComments(tuple.get("additional_comments", String.class));
         }
         // Add more fields as necessary
 

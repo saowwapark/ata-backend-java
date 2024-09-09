@@ -19,7 +19,7 @@ public class SalarySurvey {
     private long id;
 
     @Column(name = "Timestamp")
-    private String time_stamp;
+    private String timestamp;
 
     @Column(name = "Employer")
     private String employer;
@@ -58,7 +58,7 @@ public class SalarySurvey {
     public String toString() {
         return "SalarySurvey{" +
                 "id=" + id +
-                ", time_stamp='" + time_stamp + '\'' +
+                ", time_stamp='" + timestamp + '\'' +
                 ", employer='" + employer + '\'' +
                 ", location='" + location + '\'' +
                 ", job_title='" + job_title + '\'' +

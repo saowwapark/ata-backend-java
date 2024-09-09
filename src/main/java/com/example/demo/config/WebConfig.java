@@ -1,7 +1,7 @@
 package com.example.demo.config;
 
-import com.example.demo.filter.BracketFixFilter;
-import com.example.demo.requestInterceptor.ModifyRequestUrl;
+import com.example.demo.filter.EncodeRequestFilter;
+import com.example.demo.requestInterceptor.DecodeRequestFilter;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,25 +10,23 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
-    /*
-    private final ModifyRequestUrl modifyRequestUrl;
 
-    WebConfig(ModifyRequestUrl modifyRequestUrl) {
-        this.modifyRequestUrl = modifyRequestUrl;
+    private final DecodeRequestFilter decodeRequestFilter;
+
+    WebConfig(DecodeRequestFilter decodeRequestFilter) {
+        this.decodeRequestFilter = decodeRequestFilter;
     }
-
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(modifyRequestUrl);
+        registry.addInterceptor(decodeRequestFilter);
     }
-    */
 
     @Bean
-    public FilterRegistrationBean<BracketFixFilter> bracketFixFilter() {
+    public FilterRegistrationBean<EncodeRequestFilter> bracketFixFilter() {
         System.out.println("bracketFixFilter");
-        FilterRegistrationBean<BracketFixFilter> registrationBean = new FilterRegistrationBean<>();
-        registrationBean.setFilter(new BracketFixFilter());
+        FilterRegistrationBean<EncodeRequestFilter> registrationBean = new FilterRegistrationBean<>();
+        registrationBean.setFilter(new EncodeRequestFilter());
         registrationBean.addUrlPatterns("/*"); // Apply filter to all URLs
 
         return registrationBean;
