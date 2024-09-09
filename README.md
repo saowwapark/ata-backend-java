@@ -8,4 +8,4 @@
 ![image](result/db_table.png)
 
 * To import the input file (salary_survey.csv) into DB, all type of columns need to be `text`.
-* Adding `id` as primary key with `long` type.
+* Added `id` as primary key with `long` type.
